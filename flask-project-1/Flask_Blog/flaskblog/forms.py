@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField
 from wtforms.fields.html5 import EmailField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flaskblog.models import User
@@ -42,12 +42,32 @@ class UpdateAccountProfile(FlaskForm):
     submit = SubmitField(label='Update')
 
     def validate_username(self, username):
-        uname = User.query.filter_by(username=username.data).first()
-        if uname:
-            raise ValidationError("This username has been taken. Please choose different username")
+        if username.data != current_user.username:
+            uname = User.query.filter_by(username=username.data).first()
+            if uname:
+                raise ValidationError("This username has been taken. Please choose different username")
 
     def validate_email(self, email):
         if email.data != current_user.email:
             user = User.query.filter_by(email=email.data).first()
             if user:
                 raise ValidationError("This email has been taken. Please choose different email")
+
+
+class CreateNewPost(FlaskForm):
+    title = StringField(label='Title', validators=[
+                           DataRequired(), Length(min=5, max=20)])
+    content = TextAreaField(label='Content', validators=[DataRequired()])
+    submit = SubmitField(label='Submit Post')
+
+    # def validate_title(self, title):
+    #     if username.data != current_user.username:
+    #         uname = User.query.filter_by(username=username.data).first()
+    #         if uname:
+    #             raise ValidationError("This username has been taken. Please choose different username")
+
+    # def validate_email(self, email):
+    #     if email.data != current_user.email:
+    #         user = User.query.filter_by(email=email.data).first()
+    #         if user:
+    #             raise ValidationError("This email has been taken. Please choose different email")
