@@ -1,4 +1,4 @@
-from flaskblog.config import BaseConfig
+from flaskblog.config import LocalDevConfig
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -11,7 +11,7 @@ login_manager = LoginManager()
 login_manager.login_view = 'users.login'
 login_manager.login_message_category = 'info'
 
-def create_app(configuration=BaseConfig):
+def create_app(configuration=LocalDevConfig):
     app = Flask(__name__)
     app.config.from_object(configuration)
     db.init_app(app)
