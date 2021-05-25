@@ -3,8 +3,9 @@ from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, PasswordField, SubmitField, TextAreaField
 from wtforms.fields.html5 import EmailField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from flaskblog.models import User
+from flaskblog.users.models import User
 from flask_login import current_user
+
 
 class RegistrationForm(FlaskForm):
     username = StringField(label='Username', validators=[
@@ -52,22 +53,3 @@ class UpdateAccountProfile(FlaskForm):
             user = User.query.filter_by(email=email.data).first()
             if user:
                 raise ValidationError("This email has been taken. Please choose different email")
-
-
-class CreateNewPost(FlaskForm):
-    title = StringField(label='Title', validators=[
-                           DataRequired(), Length(min=5, max=20)])
-    content = TextAreaField(label='Content', validators=[DataRequired()])
-    submit = SubmitField(label='Submit Post')
-
-    # def validate_title(self, title):
-    #     if username.data != current_user.username:
-    #         uname = User.query.filter_by(username=username.data).first()
-    #         if uname:
-    #             raise ValidationError("This username has been taken. Please choose different username")
-
-    # def validate_email(self, email):
-    #     if email.data != current_user.email:
-    #         user = User.query.filter_by(email=email.data).first()
-    #         if user:
-    #             raise ValidationError("This email has been taken. Please choose different email")

@@ -1,4 +1,4 @@
-{% extends 'layout.html' %} {% block content %}
+{% extends 'main/layout.html' %} {% block content %}
 <div class="content-section">
   <form action="/register" method="POST">
     {{ form.hidden_tag() }}
@@ -59,7 +59,7 @@
     <div class="form-group">{{ form.submit }}</div>
   </form>
   <div>
-    <p>Already have an accout ? <a href="{{url_for('login')}}">Login</a></p>
+    <p>Already have an accout ? <a href="{{url_for('users.login')}}">Login</a></p>
   </div>
 </div>
 {% endblock content %}
