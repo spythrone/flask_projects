@@ -14,15 +14,17 @@
           </div>
         </article>
     {% endfor %}
-    {% for page_num in posts.iter_pages() %}
-      {% if page_num %}
-          {% if page_num == posts.page %}
-            <a class="btn btn-primary mb-4" href="{{ url_for('main.home', page=page_num) }}">{{ page_num }}</a>
-          {% else %}
-            <a class="btn btn-outline-info mb-4" href="{{ url_for('main.home', page=page_num) }}">{{ page_num }}</a>
-          {% endif %}
-      {% else %}
-          ...
-      {% endif %}
-    {% endfor %}
 {% endblock content %}
+{% block basecontent %}
+  {% for page_num in posts.iter_pages() %}
+    {% if page_num %}
+        {% if page_num == posts.page %}
+          <a class="btn btn-primary mb-4" href="{{ url_for('main.home', page=page_num) }}">{{ page_num }}</a>
+        {% else %}
+          <a class="btn btn-outline-info mb-4" href="{{ url_for('main.home', page=page_num) }}">{{ page_num }}</a>
+        {% endif %}
+    {% else %}
+        ...
+    {% endif %}
+  {% endfor %}
+{% endblock basecontent %}

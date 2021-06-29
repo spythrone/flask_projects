@@ -10,6 +10,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 
 users = Blueprint('users', __name__, template_folder='templates')
 
+
 @users.route('/register', methods=['GET', 'POST'])
 def registration():
     if current_user.is_authenticated:
@@ -19,7 +20,8 @@ def registration():
 
     if reg_form.validate_on_submit():
         password_hash = generate_password_hash(reg_form.password.data)
-        user = User(username=reg_form.username.data, email=reg_form.email.data, password=password_hash)
+        user = User(username=reg_form.username.data,
+                    email=reg_form.email.data, password=password_hash)
         db.session.add(user)
         db.session.commit()
         flash(f'Account created for { reg_form.username.data } !', 'success')
@@ -43,10 +45,12 @@ def login():
             flash(f'Login failed please check email and password !', 'danger')
     return render_template('users/login.html', title='Login', form=log_form)
 
+
 @users.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('main.home'))
+
 
 @users.route('/account', methods=['GET', 'POST'])
 @login_required
@@ -64,7 +68,8 @@ def account():
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.email.data = current_user.email
-    image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+    image_file = url_for(
+        'static', filename='profile_pics/' + current_user.image_file)
     return render_template('users/account.html', title='Account',
                            image_file=image_file, form=form)
 
@@ -73,5 +78,6 @@ def account():
 def user_posts(username):
     page = request.args.get("page", 1, type=int)
     user = User.query.filter_by(username=username).first_or_404()
-    posts = Posts.query.filter_by(user=user).order_by(Posts.date_posted.desc()).paginate(page=page, per_page=5)
+    posts = Posts.query.filter_by(user=user).order_by(
+        Posts.date_posted.desc()).paginate(page=page, per_page=5)
     return render_template('users/user_posts.html', posts=posts, user=user)

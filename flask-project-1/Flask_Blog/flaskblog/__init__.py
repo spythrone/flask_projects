@@ -11,6 +11,7 @@ login_manager = LoginManager()
 login_manager.login_view = 'users.login'
 login_manager.login_message_category = 'info'
 
+
 def create_app(configuration=LocalDevConfig):
     app = Flask(__name__)
     app.config.from_object(configuration)
